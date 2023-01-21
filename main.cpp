@@ -8,6 +8,7 @@
 #include <iostream>
 #include <math.h>
 #include <algorithm>
+#include <string>
 #include <vector>
 
 
@@ -195,8 +196,24 @@ int main()
       ImGui::Text("Triangle Circle Thing");
       ImGui::ColorEdit4("Color 1", color1);
       ImGui::ColorEdit4("Color 2", color2);
-      ImGui::SliderInt("Triangles", &triangle_count, 2, 50);
+      ImGui::SliderInt("Triangles", &triangle_count, 2, 100);
       ImGui::End();
+
+      ImGui::Begin("Vertices");
+      std::string str;
+      for (int i = 0; i < vertices2.size(); i+=2)
+        str += std::to_string(vertices2[i]) += ", " + std::to_string(vertices2[i+1]) += "\n";
+      ImGui::Text(str.c_str());
+      ImGui::End();
+
+      ImGui::Begin("Indices");
+      str = "";
+      for (int i = 0; i < indices2.size(); i+=3)
+        str += std::to_string(indices2[i]) += ", " + std::to_string(indices2[i+1]) += ", " + std::to_string(indices2[i+2]) += "\n";
+      ImGui::Text(str.c_str());
+      ImGui::End();
+
+
       ImGui::Render();
       ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
