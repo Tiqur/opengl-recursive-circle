@@ -3,6 +3,9 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include "include/glad/glad.h"
 #include "include/stb_image.h"
+#include "include/glm/glm.hpp"
+#include "include/glm/gtc/matrix_transform.hpp"
+#include "include/glm/gtc/type_ptr.hpp"
 #include "lib/shader.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -85,7 +88,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Create a window with 800x800 dimensions, named "Test"
-    GLFWwindow* window = glfwCreateWindow(800, 800, "Test", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1000, 1000, "Test", NULL, NULL);
 
     glfwSetScrollCallback(window, scroll_callback);
 
@@ -153,6 +156,10 @@ int main()
     float color2[4] = {0.8f, 0.4f, 0.8f, 1.0f};
     int triangle_count = 2;
 
+    bool spinX = false;
+    bool spinY = false;
+    bool spinZ = false;
+
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // The main loop of the program
@@ -167,7 +174,6 @@ int main()
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
       glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices2.size()*sizeof(int), indices2.data(), GL_STATIC_DRAW);
 
-
       // Clear screen with color
       glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT);
@@ -176,8 +182,20 @@ int main()
       ImGui_ImplGlfw_NewFrame();
       ImGui::NewFrame();
 
+      // user shader
       shader.use();
       glBindVertexArray(VAO);
+
+      // Create transformation matrix + rotate
+      glm::mat4 trans = glm::mat4(1.0f);
+      // Scale down
+      trans = glm::scale(trans, glm::vec3(0.8f, 0.8f, 0.8f));
+      // Spin
+      if (spinX || spinY || spinZ)
+        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(1.0f*spinX, 1.0f*spinY, 1.0f*spinZ));
+      // Pass to uniform in shader
+      unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
+      glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
       // Draw triangles
       for (int i = 0; i < indices2.size()/3; i++)
@@ -197,6 +215,9 @@ int main()
       ImGui::ColorEdit4("Color 1", color1);
       ImGui::ColorEdit4("Color 2", color2);
       ImGui::SliderInt("Triangles", &triangle_count, 2, 100);
+      ImGui::Checkbox("Spin X", &spinX);
+      ImGui::Checkbox("Spin Y", &spinY);
+      ImGui::Checkbox("Spin Z", &spinZ);
       ImGui::End();
 
       ImGui::Begin("Vertices");
