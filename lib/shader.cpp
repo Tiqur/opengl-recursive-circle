@@ -1,4 +1,4 @@
-#include "../include/glad/glad.h"
+#include "../include/glad.h"
 #include <fstream>
 #include <sstream>
 #include <GLFW/glfw3.h>

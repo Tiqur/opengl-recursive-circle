@@ -1,12 +1,12 @@
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
-#include "include/glad/glad.h"
-#include "include/stb_image.h"
-#include "include/glm/glm.hpp"
-#include "include/glm/gtc/matrix_transform.hpp"
-#include "include/glm/gtc/type_ptr.hpp"
-#include "lib/shader.h"
+#include "../include/imgui.h"
+#include "../include/imgui_impl_glfw.h"
+#include "../include/imgui_impl_opengl3.h"
+#include "../include/glad.h"
+#include "../include/stb_image.h"
+#include "../include/glm/glm.hpp"
+#include "../include/glm/gtc/matrix_transform.hpp"
+#include "../include/glm/gtc/type_ptr.hpp"
+#include "../lib/shader.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <math.h>
@@ -142,7 +142,7 @@ int main()
     glBindVertexArray(0);
 
     // Load shaders
-    Shader shader{"shaders/vertex.glsl", "shaders/fragment.glsl"};
+    Shader shader{"src/shaders/vertex.glsl", "src/shaders/fragment.glsl"};
 
 
     IMGUI_CHECKVERSION();

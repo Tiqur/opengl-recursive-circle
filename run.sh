@@ -1,1 +1,1 @@
-g++ main.cpp glad.c lib/* imgui/* -o main -lglfw && ./main
+g++ -o main src/main.cpp lib/* -lglfw && ./main
